@@ -115,7 +115,7 @@
           },
           type: 'GET',
           success: function (data) {
-            if (data.status) {
+            if (data.status === '1') {
               const lives = data['lives'][0];
               option.success(lives);
             } else {
