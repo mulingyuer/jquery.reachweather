@@ -35,6 +35,8 @@ success对应的匿名函数接受一个参数data，这个就是上面图的天
 
 **高德开发者key：**[链接](https://lbs.amap.com/api/webservice/guide/api/weatherinfo/)
 
+关于天气键值对的定义，在高德开发者key页面可以看到的，自行查询，这里就不重复了。
+
 * * *
 
 ## demo
