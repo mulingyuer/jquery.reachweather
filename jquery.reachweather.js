@@ -25,14 +25,43 @@
       /*加载完毕*/
       $script.on('load', function () {
         const country = returnCitySN.cname.toLowerCase();
-        if (country.match('china')) {
-          baiduGetAddress(returnCitySN.cip);
+        if (!country.match('china')) {
+          amapIpPost(returnCitySN.cip)
         } else {
-          throw new Error('当前插件不支持国外天气获取！');
+          baiduGetAddress(returnCitySN.cip);
         };
       })
       $script.attr('src', 'https://pv.sohu.com/cityjson?ie=utf-8');
       body.appendChild($script[0]);
+
+
+      /*高德ip定位*/
+      function amapIpPost(ip) {
+        $.ajax({
+          url: 'https://restapi.amap.com/v3/ip',
+          data: {
+            key: option.amapkey,
+            ip: ip
+          },
+          type: 'GET',
+          success: function (data) {
+            if (data.status === '1') {
+              const city = data['city'];
+              if (typeof city === 'string') {
+                getAmapWeather(city);
+              } else {
+                throw new Error('当前插件不支持国外天气获取！');
+              };
+            } else {
+              weaher_Error('通过高德ip定位出错，错误消息：' + data.info + '状态码：' + data.infocode);
+            };
+          },
+          error: function (xhr) {
+            const errorCode = xhr.status;
+            weaher_Error('通过高德ip定位出错，错误码：' + errorCode);
+          }
+        });
+      };
       /*百度获取城市*/
       function baiduGetAddress(ip) {
         $.ajax({
